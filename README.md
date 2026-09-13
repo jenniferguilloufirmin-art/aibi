@@ -1,6 +1,6 @@
 # aibi — Safe Device AI
 
-**AIBI est une application locale débutante** d’assistant d’appareil contrôlée
+**AIBI 2.0 est une application locale débutante** d’assistant d’appareil contrôlée
 par permissions explicites. Elle peut
 fournir des informations non sensibles sur la plateforme et lister le dossier
 personnel, mais **n’exécute aucune commande système arbitraire**. Les actions
@@ -12,6 +12,12 @@ locale. Elle ne connaît pas encore tout, ne comprend pas toujours les demandes
 et ne prétend pas contrôler seule l’appareil. Elle apprend uniquement les
 informations que l’utilisateur lui donne explicitement :
 
+La version 2.0 peut lire ses réponses à voix haute avec le moteur vocal local
+du système (`say` sur macOS ou `espeak` s'il est installé). Aucun audio n'est
+envoyé à un service distant et le texte reste disponible si la voix n'est pas
+installée. Utilisez `/voix on` ou `/voix off` dans le chat, ou `--silent` au
+lancement.
+
 ## Démarrage
 
 ```bash
@@ -19,6 +25,7 @@ python -m pip install -e .
 pytest
 python -m safe_device_ai.cli chat
 # ou : aibi-app
+python -m safe_device_ai.cli chat --silent
 ```
 
 Dans le chat :

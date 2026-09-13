@@ -9,12 +9,13 @@ from .models import Permission
 def main() -> None:
     parser = argparse.ArgumentParser(description="Application AIBI à permissions explicites.")
     parser.add_argument("action", choices=["chat", "device_info", "list_home", "shell"])
+    parser.add_argument("--silent", action="store_true", help="Ne pas lire les réponses à voix haute.")
     parser.add_argument("--allow-device-info", action="store_true")
     parser.add_argument("--allow-read-files", action="store_true")
     args = parser.parse_args()
 
     if args.action == "chat":
-        run_chat()
+        run_chat(voice_enabled=not args.silent)
         return
 
     agent = SafeDeviceAgent()

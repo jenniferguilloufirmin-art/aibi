@@ -4,6 +4,7 @@ from safe_device_ai import Permission, PolicyEngine, SafeDeviceAgent
 from safe_device_ai.robot import SafeRobotController
 from safe_device_ai.app import AibiApp
 from safe_device_ai.memory import LocalMemory
+from safe_device_ai.speech import SpeechUnavailable
 
 
 def test_unknown_and_shell_actions_are_blocked(tmp_path):
@@ -67,3 +68,31 @@ def test_app_can_be_taught_and_remembers_only_explicit_facts(tmp_path):
     assert "mémorisé" in app.respond("/apprendre animal = chat")
     assert app.respond("Quel est mon animal ?") == "chat"
     assert "1 information" in app.respond("/memoire")
+
+
+def test_app_speaks_responses_and_can_be_silenced(tmp_path):
+    class Speaker:
+        def __init__(self):
+            self.messages = []
+
+        def speak(self, text):
+            self.messages.append(text)
+
+    speaker = Speaker()
+    app = AibiApp(LocalMemory(tmp_path / "memory.json"), speaker=speaker)
+    response = app.respond("Bonjour")
+    app.speak_response(response)
+    assert speaker.messages == [response]
+    app.respond("/voix off")
+    app.speak_response("Silence")
+    assert speaker.messages == [response]
+
+
+def test_missing_speech_engine_falls_back_to_text(tmp_path):
+    class MissingSpeaker:
+        def speak(self, text):
+            raise SpeechUnavailable("absent")
+
+    app = AibiApp(LocalMemory(tmp_path / "memory.json"), speaker=MissingSpeaker())
+    app.speak_response("Réponse")
+    assert app.voice_enabled is False
