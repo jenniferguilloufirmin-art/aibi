@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aibi-safe-device-ai"
+version = "0.1.0"
+description = "Prototype d'assistant d'appareil avec permissions et garde-fous."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{name = "aibi"}]
+
+[project.scripts]
+aibi-safe = "safe_device_ai.cli:main"
+aibi-app = "safe_device_ai.app:run_chat"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

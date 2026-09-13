@@ -1,3 +1,11 @@
+Metadata-Version: 2.4
+Name: aibi-safe-device-ai
+Version: 0.1.0
+Summary: Prototype d'assistant d'appareil avec permissions et garde-fous.
+Author: aibi
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+
 # aibi — Safe Device AI
 
 **AIBI est une application locale débutante** d’assistant d’appareil contrôlée
