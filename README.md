@@ -1,2 +1,52 @@
-# aibi
-Application d’intelligence artificielle capable de discuter, créer du contenu, coder, automatiser des tâches et exécuter des commandes dans un terminal connecté. Elle pourra aussi être intégrée à un robot. Attention : toute première version bêta, des erreurs et des actions inattendues sont possibles.
+# aibi — Safe Device AI
+
+**AIBI est une application locale débutante** d’assistant d’appareil contrôlée
+par permissions explicites. Elle peut
+fournir des informations non sensibles sur la plateforme et lister le dossier
+personnel, mais **n’exécute aucune commande système arbitraire**. Les actions
+sensibles demandent une confirmation humaine, toutes les décisions sont
+journalisées et l’arrêt d’urgence bloque immédiatement les actions.
+
+L’application sait aussi discuter en texte et conserver une petite mémoire
+locale. Elle ne connaît pas encore tout, ne comprend pas toujours les demandes
+et ne prétend pas contrôler seule l’appareil. Elle apprend uniquement les
+informations que l’utilisateur lui donne explicitement :
+
+## Démarrage
+
+```bash
+python -m pip install -e .
+pytest
+python -m safe_device_ai.cli chat
+# ou : aibi-app
+```
+
+Dans le chat :
+
+```text
+/apprendre couleur préférée = bleu
+Quelle est ma couleur préférée ?
+/memoire
+/quitter
+```
+
+Pour les actions appareil :
+
+```bash
+python -m safe_device_ai.cli device_info --allow-device-info
+python -m safe_device_ai.cli shell --allow-device-info  # toujours bloqué
+```
+
+## Architecture de sécurité
+
+- `PolicyEngine` : permissions séparées, révocables, et classification du risque.
+- `SafeDeviceAgent` : façade d’exécution sans shell arbitraire.
+- `AuditLog` : journal JSONL des permissions, autorisations et refus.
+- `SafeRobotController` : adaptateur robot avec confirmation et limite de distance.
+- arrêt d’urgence : `policy.stop()` ; la reprise doit être explicite avec `resume()`.
+
+Le mode veille dépend du système d’exploitation et du matériel : ce prototype
+ne contourne pas les protections du système et n’active pas de microphone,
+caméra, réseau ou contrôle robot sans permission accordée par l’utilisateur.
+Les connecteurs réseau et robot doivent être injectés par l’application cliente
+et appliquer la même policy.
