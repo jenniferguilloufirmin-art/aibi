@@ -1,3 +1,0 @@
-[console_scripts]
-aibi-app = safe_device_ai.app:run_chat
-aibi-safe = safe_device_ai.cli:main
