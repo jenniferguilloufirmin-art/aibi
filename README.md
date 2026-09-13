@@ -18,6 +18,9 @@ envoyé à un service distant et le texte reste disponible si la voix n'est pas
 installée. Utilisez `/voix on` ou `/voix off` dans le chat, ou `--silent` au
 lancement.
 
+Si une réponse inconnue est recopiée par erreur dans l'entrée, AIBI reconnaît
+son propre préfixe `AIBI :` et évite de répéter indéfiniment le même message.
+
 ## Démarrage
 
 ```bash
