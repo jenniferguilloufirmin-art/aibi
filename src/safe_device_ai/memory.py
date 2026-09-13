@@ -35,6 +35,10 @@ class LocalMemory:
 
     def answer(self, question: str) -> str:
         key = self._key(question)
+        if key.startswith("aibi :"):
+            key = key.removeprefix("aibi :").strip()
+        if key.startswith("je ne sais pas encore répondre à cela"):
+            return "Je viens déjà de vous indiquer que je ne connais pas encore cette réponse."
         if key in self.entries:
             return self.entries[key]
         words = set(key.split())

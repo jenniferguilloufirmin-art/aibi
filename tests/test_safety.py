@@ -96,3 +96,10 @@ def test_missing_speech_engine_falls_back_to_text(tmp_path):
     app = AibiApp(LocalMemory(tmp_path / "memory.json"), speaker=MissingSpeaker())
     app.speak_response("Réponse")
     assert app.voice_enabled is False
+
+
+def test_repeated_unknown_response_does_not_echo_forever(tmp_path):
+    app = AibiApp(LocalMemory(tmp_path / "memory.json"), voice_enabled=False)
+    first = app.respond("Une question inconnue")
+    repeated = app.respond(f"AIBI : {first}")
+    assert repeated == "Je viens déjà de vous indiquer que je ne connais pas encore cette réponse."
